@@ -29,3 +29,6 @@ class Category:
     def __eq__(self, other):
         """ Overloaded in order to verify the membership inside a collection """
         return self.name == other.name
+
+    def __str__(self):
+        return f"{self.name}"
