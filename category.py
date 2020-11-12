@@ -4,6 +4,7 @@ from json import JSONEncoder, JSONDecoder, dump, loads
 # define the Encoder class used in serialization
 class Encoder(JSONEncoder):
     """ from a Python object we need to obtain a json representation"""
+
     def default(self, o: str) -> str:
         return o.__dict__
 

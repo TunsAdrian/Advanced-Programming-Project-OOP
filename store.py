@@ -1,18 +1,16 @@
 from category import Category
 from categories import Categories
+from products import Products
+import product
 from json import JSONDecodeError
+import menus
 
-
-# define some functions to be used in the main menu. You can follow the
-# suggestion described in the lab requirement, by simulating a switch
-# instruction using a dictionary, or just using multiple 'if' branches
-# which is, obviously, much uglier
 
 def add_category():
     new_category = Category(input("Please enter a new category:\n"))
     Categories.add_category(new_category)
     print("Category " + str(new_category) + " added successfully")
-    iinput("Press any key in order to continue\n")
+    input("Press any key in order to continue\n")
 
 
 def remove_category():
@@ -28,7 +26,7 @@ def remove_category():
                 "This category does not exist in the list. Press 1 to try entering another category or 2 to return to the store menu\n"))
             if category_option == 1:
                 remove_category()
-    except JSONDecodeError as e:
+    except JSONDecodeError:
         input("Error on retrieving the categories. Press any key in order to continue\n")
 
 
@@ -39,12 +37,47 @@ def list_categories():
         for cat in categories:
             print(cat.name)
         input("Press any key in order to continue\n")
-    except JSONDecodeError as e:
+    except JSONDecodeError:
         input("Error on retrieving the categories. Press any key in order to continue\n")
 
 
 def add_product():
-    pass
+    selected_category = Category(input("Input the desired category: "))
+    try:
+        categories = Categories.load_categories()
+        if categories.count(selected_category) > 0:
+            print(menus.ADD_PRODUCT_SUBMENU)
+            try:
+                selected_option = int(input("Choose an option: "))
+                if selected_option == 1:
+                    necklace_attributes = "(name, price, description, color, material, length)"
+                    create_product("Necklace", necklace_attributes, selected_category)
+                elif selected_option == 2:
+                    bracelet_attributes = "(name, price, description, color, material, weight)"
+                    create_product("Bracelet", bracelet_attributes, selected_category)
+                elif selected_option == 3:
+                    earring_attributes = "(name, price, description, material, length, weight)"
+                    create_product("Earring", earring_attributes, selected_category)
+                elif selected_option == 4:
+                    print("Going back...\n")
+                else:
+                    error_handler()
+            except ValueError:
+                input("\nPlease try again by selecting a number for your option. Press any key to continue...")
+                add_product()
+    except JSONDecodeError:
+        input("Error on retrieving the categories. Press any key in order to continue\n")
+
+
+def create_product(product_name, product_attributes, category):
+    attributes = input(f"Introduce the {product_attributes} for the {product_name}, separated by a comma\n")
+    product_attributes = attributes.split(',')
+
+    result = getattr(product, product_name)
+    new_product = result(product_attributes[0], product_attributes[1], product_attributes[2],
+                         product_attributes[3], product_attributes[4], product_attributes[5])
+    Products.add_product(new_product, product_name, category)
+    input(f"{product_name} added successfully. Press any key in order to continue\n")
 
 
 def remove_product():
@@ -52,7 +85,14 @@ def remove_product():
 
 
 def display_products():
-    pass
+    # display the existing products
+    try:
+        products = Products.load_products()
+        for prod in products:
+            print(prod)
+        input("\nPress any key in order to continue\n")
+    except JSONDecodeError:
+        input("Error on retrieving the products. Press any key in order to continue\n")
 
 
 def place_order():
@@ -65,18 +105,6 @@ def display_orders():
 
 def error_handler():
     print("This option does not exist")
-
-
-MENU_DISPLAY = """Welcome to our shop
-1. Add a category
-2. Remove a category
-3. Display categories
-4. Add a product
-5. Remove a product
-6. Display a product
-7. Place an order
-8. Display orders
-9. Exit"""
 
 
 def store_menu(menu_option):
@@ -97,10 +125,13 @@ def store_menu(menu_option):
 
 if __name__ == '__main__':
     while True:
-        print(MENU_DISPLAY)
-        option = int(input("\nChoose an option: "))
-        if option != 9:
-            store_menu(option)
-        else:
-            print("\nExiting program")
-            break
+        print(menus.MAIN_MENU)
+        try:
+            option = int(input("\nChoose an option: "))
+            if option != 9:
+                store_menu(option)
+            else:
+                print("\nLeaving the shop. See you soon!")
+                break
+        except ValueError:
+            input("\nPlease try again by selecting an int number for the option. Press any key to continue...")
