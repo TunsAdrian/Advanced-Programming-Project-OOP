@@ -6,7 +6,7 @@ import product
 class Encoder(JSONEncoder):
     """ from a Python object we need to obtain a json representation"""
 
-    # encode the type of the object also
+    # also encode the type of the object
     def default(self, o):
         result = o.__dict__
         result['type'] = type(o).__name__
@@ -50,7 +50,7 @@ class Products:
     @classmethod
     def remove_product(cls, cat):
         """ Removes a product from the products collection. We pass the product
-            to be removed as a parameter to teh function and then, as a first step
+            to be removed as a parameter to the function and then, as a first step
             we remove it from the class variable 'products'. Then, in a second step
             we iterate that collection and we serialize element by element
         """
@@ -65,14 +65,14 @@ class Products:
                     f.write("\n")
 
     @classmethod
-    def add_product(cls, product, product_type, category):
+    def add_product(cls, product_to_add):
         """ Adds a new product in the products collection. We need to save the
-            new product on the disk too, so we have to call teh Encoder class to
-            transform teh Python object in a JSON representation
+            new product on the disk too, so we have to call the Encoder class to
+            transform the Python object in a JSON representation
         """
         cls.load_products()
-        if product not in cls.products:
-            true_product = product
+        if product_to_add not in cls.products:
+            true_product = product_to_add
             with open("products.txt", 'a') as f:
                 e = Encoder()
                 encoded_product = e.encode(true_product)

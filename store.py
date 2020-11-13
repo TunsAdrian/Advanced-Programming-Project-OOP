@@ -9,36 +9,67 @@ import menus
 def add_category():
     new_category = Category(input("Please enter a new category:\n"))
     Categories.add_category(new_category)
-    print("Category " + str(new_category) + " added successfully")
-    input("Press any key in order to continue\n")
+    input("Category -" + str(new_category) + "- added successfully. Press enter key in order to continue\n")
 
 
 def remove_category():
-    new_category = Category(input("Introduce the category to be removed:\n"))
-    try:
-        categories = Categories.load_categories()
-        if categories.count(new_category) > 0:
-            Categories.remove_category(new_category)
-            print("Category " + str(new_category) + " removed successfully")
-            input("Press any key in order to continue\n")
-        else:
-            category_option = int(input(
-                "This category does not exist in the list. Press 1 to try entering another category or 2 to return to the store menu\n"))
-            if category_option == 1:
-                remove_category()
-    except JSONDecodeError:
-        input("Error on retrieving the categories. Press any key in order to continue\n")
+    option_remove_category = int(input(
+        "Warning! Deleting a category will also delete all the products inside of it.\n1. Continue\n2. Go back\n"))
+    if option_remove_category == 1:
+        category_to_remove = Category(input("Introduce the name of the category to be removed:\n"))
+        try:
+            categories = Categories.load_categories()
+            if categories.count(category_to_remove) > 0:
+                products = Products.load_products()
+                for prod in products:
+                    if prod.get_category_name() == category_to_remove.name:
+                        Products.remove_product(prod)
+                Categories.remove_category(category_to_remove)
+                input("Category -" + str(
+                    category_to_remove) + "- and all its products were removed successfully.\nPress enter key in order to continue\n")
+            else:
+                category_option = int(input(
+                    "This category does not exist in the list. Input 1 to try entering another category or any other number to return to the store menu:\n"))
+                if category_option == 1:
+                    remove_category()
+        except JSONDecodeError:
+            input("Error on retrieving the categories. Press enter key in order to continue\n")
+    elif option_remove_category == 2:
+        print("Going back...\n")
+    else:
+        error_handler()
+        remove_category()
 
 
 def list_categories():
-    # display the existing categories
-    try:
-        categories = Categories.load_categories()
-        for cat in categories:
-            print(cat.name)
-        input("Press any key in order to continue\n")
-    except JSONDecodeError:
-        input("Error on retrieving the categories. Press any key in order to continue\n")
+    # display the existing categories or the categories with the products
+    option_list_categories = int(input(
+        "List the categories only or the categories with products?\n1. Categories only\n2. Categories and products\n3. Go back\n"))
+    if option_list_categories == 1:
+        try:
+            categories = Categories.load_categories()
+            for cat in categories:
+                print(cat.name)
+            input("Press enter key in order to continue\n")
+        except JSONDecodeError:
+            input("Error on retrieving the categories. Press enter key in order to continue\n")
+    elif option_list_categories == 2:
+        try:
+            categories = Categories.load_categories()
+            products = Products.load_products()
+            for cat in categories:
+                print(cat.name)
+                for prod in products:
+                    if prod.get_category_name() == cat.name:
+                        print(f"\t{prod}", prod)
+            input("Press enter key in order to continue\n")
+        except JSONDecodeError:
+            input("Error on retrieving the categories. Press enter key in order to continue\n")
+    elif option_list_categories == 3:
+        print("Going back...\n")
+    else:
+        error_handler()
+        list_categories()
 
 
 def add_product():
@@ -50,49 +81,94 @@ def add_product():
             try:
                 selected_option = int(input("Choose an option: "))
                 if selected_option == 1:
-                    necklace_attributes = "(name, price, description, color, material, length)"
+                    necklace_attributes = "-name, price, description, color, material, length-"
                     create_product("Necklace", necklace_attributes, selected_category)
                 elif selected_option == 2:
-                    bracelet_attributes = "(name, price, description, color, material, weight)"
+                    bracelet_attributes = "-name, price, description, color, material, weight-"
                     create_product("Bracelet", bracelet_attributes, selected_category)
                 elif selected_option == 3:
-                    earring_attributes = "(name, price, description, material, length, weight)"
+                    earring_attributes = "-name, price, description, material, length, weight-"
                     create_product("Earring", earring_attributes, selected_category)
                 elif selected_option == 4:
                     print("Going back...\n")
                 else:
                     error_handler()
+                    add_product()
             except ValueError:
-                input("\nPlease try again by selecting a number for your option. Press any key to continue...")
+                input("\nPlease try again by selecting a number for your option. Press enter key to continue...")
+                add_product()
+        else:
+            try_again_option = int(input(
+                "This category does not exist. Input 1 to try using another category or any other number to return to the store menu:\n"))
+            if try_again_option == 1:
                 add_product()
     except JSONDecodeError:
-        input("Error on retrieving the categories. Press any key in order to continue\n")
+        input("Error on retrieving the categories. Press enter key in order to continue\n")
 
 
-def create_product(product_name, product_attributes, category):
-    attributes = input(f"Introduce the {product_attributes} for the {product_name}, separated by a comma\n")
-    product_attributes = attributes.split(',')
-
+# initially I wanted to call the function create_product again if the attributes number was different than 6, but as
+# this created recursive calls I used a while loop instead
+def create_product(product_name, product_attribute_fields, category):
+    product_attributes = []
+    loop = True
+    while loop:
+        attributes = input(
+            f"Introduce the {product_attribute_fields} for the {product_name}, each attribute separated by a comma\n")
+        product_attributes = attributes.split(',')
+        if product_attributes.__len__() != 6:
+            product_attributes.clear()
+            option_to_go = int(input(
+                "Please make sure to include all the attributes. Input 1 to try again or any other number to return to the store menu:\n"))
+            if option_to_go != 1:
+                return
+        else:
+            loop = False
     result = getattr(product, product_name)
-    new_product = result(product_attributes[0], product_attributes[1], product_attributes[2],
+    new_product = result(category, product_attributes[0], product_attributes[1], product_attributes[2],
                          product_attributes[3], product_attributes[4], product_attributes[5])
-    Products.add_product(new_product, product_name, category)
-    input(f"{product_name} added successfully. Press any key in order to continue\n")
+    Products.add_product(new_product)
+    input(f"{product_name} product added successfully. Press enter key in order to continue\n")
 
 
 def remove_product():
-    pass
+    option_remove_product_menu = int(input(
+        "You will have to input the index of the product you would like to remove. If you need to see the list of products, "
+        "select option 2.\n1. Remove product\n2. Display all products\n3. Go back\n"))
+    if option_remove_product_menu == 1:
+        index_product_to_remove = int(input("Introduce the index of the product to be removed(starting from 1):\n"))
+        try:
+            products = Products.load_products()
+            if 0 < index_product_to_remove <= products.__len__():
+                product_to_remove = products[index_product_to_remove - 1]
+                Products.remove_product(product_to_remove)
+                input("Product -" + str(product_to_remove) +
+                      "- removed successfully\nPress enter key in order to continue\n")
+            else:
+                product_option = int(input(
+                    "This product does not exist in the list. Input 1 to try again or any other number to return to the store menu:\n"))
+                if product_option == 1:
+                    remove_product()
+        except JSONDecodeError:
+            input("Error on retrieving the products. Press enter key in order to continue\n")
+    elif option_remove_product_menu == 2:
+        display_products()
+        remove_product()
+    elif option_remove_product_menu == 3:
+        print("Going back...\n")
+    else:
+        error_handler()
+        remove_product()
 
 
 def display_products():
-    # display the existing products
+    # display all existing products
     try:
         products = Products.load_products()
-        for prod in products:
-            print(prod)
-        input("\nPress any key in order to continue\n")
+        for index, prod in enumerate(products, start=1):
+            print(f"{index}. {prod}")
+        input("\nPress enter key in order to continue\n")
     except JSONDecodeError:
-        input("Error on retrieving the products. Press any key in order to continue\n")
+        input("Error on retrieving the products. Press enter key in order to continue\n")
 
 
 def place_order():
@@ -104,7 +180,7 @@ def display_orders():
 
 
 def error_handler():
-    print("This option does not exist")
+    print("\nThis option does not exist\n")
 
 
 def store_menu(menu_option):
@@ -134,4 +210,4 @@ if __name__ == '__main__':
                 print("\nLeaving the shop. See you soon!")
                 break
         except ValueError:
-            input("\nPlease try again by selecting an int number for the option. Press any key to continue...")
+            input("\nPlease try again by selecting an int number for the option. Press enter key to continue...")

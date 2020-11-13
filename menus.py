@@ -1,7 +1,7 @@
-MAIN_MENU = """Welcome to our shop
+MAIN_MENU = """Welcome to the jewelery store
 1. Add a category
 2. Remove a category
-3. Display all categories
+3. Display categories
 4. Add a product
 5. Remove a product
 6. Display all products
@@ -15,4 +15,3 @@ ADD_PRODUCT_SUBMENU = """What kind of product?
 3. Earring
 4. Exit to main menu
 """
-

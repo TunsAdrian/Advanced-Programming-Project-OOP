@@ -47,7 +47,7 @@ class Categories:
     @classmethod
     def remove_category(cls, cat):
         """ Removes a category from the categories collection. We pass the category
-            to be removed as a parameter to teh function and then, as a first step
+            to be removed as a parameter to the function and then, as a first step
             we remove it from the class variable 'categories'. Then, in a second step
             we iterate that collection and we serialize element by element
         """
@@ -64,8 +64,8 @@ class Categories:
     @classmethod
     def add_category(cls, cat):
         """ Adds a new category in the categories collection. We need to save the
-            new category on the disk too, so we have to call teh Encoder class to
-            transform teh Python object in a JSON representation
+            new category on the disk too, so we have to call the Encoder class to
+            transform the Python object in a JSON representation
         """
         cls.load_categories()
         if cat not in cls.categories:
