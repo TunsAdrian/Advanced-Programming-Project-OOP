@@ -20,16 +20,16 @@ class Decoder(JSONDecoder):
             values.append(data[key])
         if values[-1] == 'Necklace':
             del values[-1]
-            cat = Necklace(*values)
+            prod = Necklace(*values)
         elif values[-1] == 'Bracelet':
             del values[-1]
-            cat = Bracelet(*values)
+            prod = Bracelet(*values)
         elif values[-1] == 'Earring':
             del values[-1]
-            cat = Earring(*values)
+            prod = Earring(*values)
         else:
             raise Exception('Corrupted File: a category that is not supported is presented in the products.txt file')
-        return cat
+        return prod
 
 
 # define the Product class, which is the base class for all the  products in the store

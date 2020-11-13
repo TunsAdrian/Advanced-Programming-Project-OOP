@@ -72,9 +72,8 @@ class Products:
         """
         cls.load_products()
         if product_to_add not in cls.products:
-            true_product = product_to_add
             with open("products.txt", 'a') as f:
                 e = Encoder()
-                encoded_product = e.encode(true_product)
+                encoded_product = e.encode(product_to_add)
                 dump(encoded_product, f)
                 f.write("\n")

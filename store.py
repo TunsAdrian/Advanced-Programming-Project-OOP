@@ -1,6 +1,8 @@
 from category import Category
 from categories import Categories
+from orders import Orders
 from products import Products
+from order import Order
 import product
 from json import JSONDecodeError
 import menus
@@ -48,8 +50,8 @@ def list_categories():
     if option_list_categories == 1:
         try:
             categories = Categories.load_categories()
-            for cat in categories:
-                print(cat.name)
+            for index, cat in enumerate(categories, start=1):
+                print(f"{index}. {cat.name}")
             input("Press enter key in order to continue\n")
         except JSONDecodeError:
             input("Error on retrieving the categories. Press enter key in order to continue\n")
@@ -57,8 +59,8 @@ def list_categories():
         try:
             categories = Categories.load_categories()
             products = Products.load_products()
-            for cat in categories:
-                print(cat.name)
+            for index, cat in enumerate(categories, start=1):
+                print(f"{index}. {cat.name}")
                 for prod in products:
                     if prod.get_category_name() == cat.name:
                         print(f"\t{prod}", prod)
@@ -172,11 +174,41 @@ def display_products():
 
 
 def place_order():
-    pass
+    option_place_order = int(input(
+        "You will have to input the index of the product you would like to order. If you need to see the list of products, "
+        "select option 2.\n1. Prepare order\n2. Display all products\n3. Go back\n"))
+    if option_place_order == 1:
+        index_product = int(input("Introduce the index of the product you want to order(starting from 1):\n"))
+        try:
+            products = Products.load_products()
+            if 0 < index_product <= products.__len__():
+                product_to_order = products[index_product - 1]
+                quantity = int(input("How many products of this kind you would like to order?\n"))
+                delivery_address = input("Please write the address where this order should be delivered:\n")
+                prepared_order = Order(product_to_order.__dict__, quantity, delivery_address)
+                Orders.add_order(prepared_order)
+                input(f"Your order has been placed successfully. Press enter key in order to continue\n")
+        except JSONDecodeError:
+            input("Error on retrieving the products. Press enter key in order to continue\n")
+    elif option_place_order == 2:
+        display_products()
+        place_order()
+    elif option_place_order == 3:
+        print("Going back...\n")
+    else:
+        error_handler()
+        remove_product()
 
 
 def display_orders():
-    pass
+    # display all existing orders
+    try:
+        orders = Orders.load_orders()
+        for index, placed_order in enumerate(orders, start=1):
+            print(f"{index}. {placed_order}")
+        input("\nPress enter key in order to continue\n")
+    except JSONDecodeError:
+        input("Error on retrieving the orders. Press enter key in order to continue\n")
 
 
 def error_handler():
