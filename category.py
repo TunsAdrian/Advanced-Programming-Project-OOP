@@ -1,4 +1,4 @@
-from json import JSONEncoder, JSONDecoder, dump, loads
+from json import JSONEncoder, JSONDecoder, loads
 
 
 # define the Encoder class used in serialization

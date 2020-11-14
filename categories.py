@@ -1,4 +1,5 @@
-from json import JSONDecoder, JSONEncoder, JSONDecodeError, loads, dump
+from json import JSONEncoder, JSONDecodeError, loads, dump
+
 import category
 
 
@@ -12,7 +13,6 @@ class Encoder(JSONEncoder):
 
 class Categories:
     """ holds a list with all Category objects """
-
     categories = []
 
     @classmethod
@@ -25,7 +25,7 @@ class Categories:
             "{\"name\": \"Bracelets\"}"
 
             Basically, we read the file line by line and from those lines we
-            recreate the Pyhton objects.
+            recreate the Python objects.
 
             Also we take care to not multiply the elements in the categories
             list. We have avoided this by overloading the __eq__() operator in
@@ -40,7 +40,7 @@ class Categories:
                     decoded_category = decoder.decode(data)
                     if decoded_category not in cls.categories:
                         cls.categories.append(decoded_category)
-        except (JSONDecodeError, FileNotFoundError) as e:
+        except (JSONDecodeError, FileNotFoundError):
             cls.categories = []
         return cls.categories
 

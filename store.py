@@ -63,7 +63,7 @@ def list_categories():
                 print(f"{index}. {cat.name}")
                 for prod in products:
                     if prod.get_category_name() == cat.name:
-                        print(f"\t{prod}", prod)
+                        print(f"\t{prod}")
             input("Press enter key in order to continue\n")
         except JSONDecodeError:
             input("Error on retrieving the categories. Press enter key in order to continue\n")
@@ -109,7 +109,7 @@ def add_product():
 
 
 # initially I wanted to call the function create_product again if the attributes number was different than 6, but as
-# this created recursive calls I used a while loop instead
+# this created unnecessary recursive calls I used a while loop instead
 def create_product(product_name, product_attribute_fields, category):
     product_attributes = []
     loop = True
@@ -190,7 +190,8 @@ def place_order():
                     if quantity > 0:
                         loop = False
                 delivery_address = input("Please write the address where this order should be delivered:\n")
-                prepared_order = Order(product_to_order.__dict__, quantity, delivery_address)
+                prepared_order = Order(product_to_order.__dict__, type(product_to_order).__name__, quantity,
+                                       delivery_address)
                 Orders.add_order(prepared_order)
                 input(f"Your order has been placed successfully. Press enter key in order to continue\n")
         except JSONDecodeError:

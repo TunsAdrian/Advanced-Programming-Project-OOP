@@ -1,4 +1,5 @@
-from json import JSONDecoder, JSONEncoder, JSONDecodeError, loads, dump
+from json import JSONEncoder, JSONDecodeError, loads, dump
+
 import product
 
 
@@ -15,24 +16,12 @@ class Encoder(JSONEncoder):
 
 class Products:
     """ holds a list with all Product objects """
-
     products = []
 
     @classmethod
     def load_products(cls):
         """ reads the products.txt file and re-compose the Python objects
-            from the json representation of products. The content of the
-            products.txt file should look something like:
-
-            "{\"name\": \"Necklaces\"}"
-            "{\"name\": \"Bracelets\"}"
-
-            Basically, we read the file line by line and from those lines we
-            recreate the Pyhton objects.
-
-            Also we take care to not multiply the elements in the products
-            list. We have avoided this by overloading the __eq__() operator in
-            product class. More on this during the lectures.
+            from the json representation of products
         """
         decoder = product.Decoder()
 
@@ -48,20 +37,20 @@ class Products:
         return cls.products
 
     @classmethod
-    def remove_product(cls, cat):
+    def remove_product(cls, prod):
         """ Removes a product from the products collection. We pass the product
             to be removed as a parameter to the function and then, as a first step
             we remove it from the class variable 'products'. Then, in a second step
             we iterate that collection and we serialize element by element
         """
         cls.load_products()
-        if cat in cls.products:
-            cls.products.remove(cat)
+        if prod in cls.products:
+            cls.products.remove(prod)
             with open("products.txt", 'w') as f:
-                for cat in cls.products:
+                for prod in cls.products:
                     e = Encoder()
-                    encoded_cat = e.encode(cat)
-                    dump(encoded_cat, f)
+                    encoded_prod = e.encode(prod)
+                    dump(encoded_prod, f)
                     f.write("\n")
 
     @classmethod

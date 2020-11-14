@@ -14,5 +14,4 @@ ADD_PRODUCT_SUBMENU = """What kind of product?
 1. Necklace
 2. Bracelet
 3. Earring
-4. Go back
-"""
+4. Go back"""

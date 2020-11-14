@@ -1,5 +1,5 @@
-from json import JSONEncoder, JSONDecoder, dump, loads
 from abc import ABC
+from json import JSONEncoder, JSONDecoder, loads
 
 
 # define the Encoder class used in serialization
@@ -33,7 +33,7 @@ class Decoder(JSONDecoder):
 
 
 # define the Product class, which is the base class for all the  products in the store
-# make it abstract class, as a simple Product object should not be instantiated
+# make it an abstract class, as a simple Product object should not be instantiated
 class Product(ABC):
     def __init__(self, category, name, price, description):
         self.category = category
@@ -59,7 +59,7 @@ class Necklace(Product):
         return super().__eq__(other) and self.__class__ == other.__class__ and self.color == other.color and self.material == other.material and self.length == other.length
 
     def __str__(self):
-        return f"Necklace: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material} and color {self.color}, having a length of {self.length}cm"
+        return f"Necklace: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material} and color {self.color}, having a length of {self.length} cm"
 
 
 class Bracelet(Product):
@@ -73,7 +73,7 @@ class Bracelet(Product):
         return super().__eq__(other) and self.__class__ == other.__class__ and self.color == other.color and self.material == other.material and self.weight == other.weight
 
     def __str__(self):
-        return f"Bracelet: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material} and color {self.color}, having a weight of {self.weight}kg"
+        return f"Bracelet: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material} and color {self.color}, having a weight of {self.weight} kg"
 
 
 class Earring(Product):
@@ -87,4 +87,4 @@ class Earring(Product):
         return super().__eq__(other) and self.__class__ == other.__class__ and self.material == other.material and self.length == other.length and self.weight == other.weight
 
     def __str__(self):
-        return f"Earring: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material}, having a length of {self.length}cm and a weight of {self.weight}kg"
+        return f"Earring: {self.name}, price: {self.price}$, description: {self.description}, of material {self.material}, having a length of {self.length} cm and a weight of {self.weight} kg"
