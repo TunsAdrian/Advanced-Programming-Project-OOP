@@ -183,7 +183,12 @@ def place_order():
             products = Products.load_products()
             if 0 < index_product <= products.__len__():
                 product_to_order = products[index_product - 1]
-                quantity = int(input("How many products of this kind you would like to order?\n"))
+                quantity = 0
+                loop = True
+                while loop:
+                    quantity = int(input("How many products of this kind you would like to order?\n"))
+                    if quantity > 0:
+                        loop = False
                 delivery_address = input("Please write the address where this order should be delivered:\n")
                 prepared_order = Order(product_to_order.__dict__, quantity, delivery_address)
                 Orders.add_order(prepared_order)
