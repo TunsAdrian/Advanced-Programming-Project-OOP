@@ -205,6 +205,36 @@ def place_order():
         remove_product()
 
 
+def remove_order():
+    option_remove_order_menu = int(input(
+        "You will have to input the index of the order you would like to cancel. If you need to see the list of orders, "
+        "select option 2.\n1. Cancel order\n2. Display all orders\n3. Go back\n"))
+    if option_remove_order_menu == 1:
+        index_order_to_remove = int(input("Introduce the index of the order to be removed(starting from 1):\n"))
+        try:
+            orders = Orders.load_orders()
+            if 0 < index_order_to_remove <= orders.__len__():
+                order_to_remove = orders[index_order_to_remove - 1]
+                Orders.remove_order(order_to_remove)
+                input(
+                    f"Order with number {index_order_to_remove} was cancelled successfully\nPress enter key in order to continue\n")
+            else:
+                order_option = int(input(
+                    "This order does not exist in the list. Input 1 to try again or any other number to return to the store menu:\n"))
+                if order_option == 1:
+                    remove_order()
+        except JSONDecodeError:
+            input("Error on retrieving the orders. Press enter key in order to continue\n")
+    elif option_remove_order_menu == 2:
+        display_orders()
+        remove_order()
+    elif option_remove_order_menu == 3:
+        print("Going back...\n")
+    else:
+        error_handler()
+        remove_order()
+
+
 def display_orders():
     # display all existing orders
     try:
@@ -229,7 +259,8 @@ def store_menu(menu_option):
         5: remove_product,
         6: display_products,
         7: place_order,
-        8: display_orders
+        8: remove_order,
+        9: display_orders
     }
 
     func = menu.get(menu_option, error_handler)
@@ -241,7 +272,7 @@ if __name__ == '__main__':
         print(menus.MAIN_MENU)
         try:
             option = int(input("\nChoose an option: "))
-            if option != 9:
+            if option != 10:
                 store_menu(option)
             else:
                 print("\nLeaving the shop. See you soon!")

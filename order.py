@@ -31,4 +31,4 @@ class Order:
         return self.__class__ == other.__class__ and self.product == other.product and self.quantity == other.quantity and self.address == other.address
 
     def __str__(self):
-        return f"Order to {self.address}, containing {self.quantity} {'item' if self.quantity == 1 else'items'} of {self.product}"
+        return f"Order to {self.address}, containing {self.quantity} {'item' if self.quantity == 1 else 'items'} of {self.product}"

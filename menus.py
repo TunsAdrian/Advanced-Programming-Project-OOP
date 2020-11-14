@@ -6,8 +6,9 @@ MAIN_MENU = """Welcome to the jewelery store
 5. Remove a product
 6. Display all products
 7. Place an order
-8. Display orders
-9. Exit"""
+8. Cancel an order
+9. Display orders
+10. Exit the shop"""
 
 ADD_PRODUCT_SUBMENU = """What kind of product?
 1. Necklace
