@@ -1,5 +1,11 @@
-# Advanced Programming - Jewelery Store
+# Python Programming - Projects
  
-A text-based store that sells jewelry, made using Python. The store persist the data in txt files using JSON Encoder.
-
-This project serves as a homework for "Advanced Python Programming" subject from bachelor year 3.
+ In this repository several projects for the bachelor year 3 subject "Advanced Python Programming" were created:
+ 
+ [Object Oriented Programming Project](https://github.com/TunsAdrian/Python-Programming-Projects/tree/OOP-Project)
+ 
+ [Functional Programming Project](https://github.com/TunsAdrian/Python-Programming-Projects/tree/Functional-Programming-Project)
+ 
+ [Network And Concurrent Programming Project](https://github.com/TunsAdrian/Python-Programming-Projects/tree/Network-Concurrent-Project)
+ 
+ Currently on the master branch, the OOP Project is present.
