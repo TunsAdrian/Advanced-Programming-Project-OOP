@@ -1,4 +1,4 @@
-# Advanced Programming - Functional Programming
+# Python Programming - Functional Programming
  
 The purpose of this homework is to become accustomed with functional programming elements in python. 
 
