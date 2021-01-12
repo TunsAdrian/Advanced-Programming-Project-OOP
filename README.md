@@ -1,4 +1,4 @@
-# Advanced Programming - Jewelery Store
+# Python Programming - Object Oriented Programming Project
  
 A text-based store that sells jewelry, made using Python. The store persist the data in txt files using JSON Encoder.
 
