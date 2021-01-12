@@ -1,5 +1,7 @@
-# Advanced Programming - Jewelery Store
+# Python Programming - Network And Concurrent Programming Project
  
-A text-based store that sells jewelry, made using Python. The store persist the data in txt files using JSON Encoder.
+The purpose of this homework is to become accustomed with network programming and concurrent programming elements in python.
 
-This project serves as a homework for "Advanced Python Programming" subject from bachelor year 3.
+The first part of the program downloads three files from three different links, using python coroutines, then decrypts the content of each of them (it is known that they are encrypted with the Caesar algorithm, with and offset of 8) and then the results are combined in a new text file.
+
+This project serves as a homework for "Advanced Python Programming" subject from bachelor year 3.   
